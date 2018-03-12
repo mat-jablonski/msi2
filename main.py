@@ -97,13 +97,9 @@ def getResponse(sortedPoints, testInstance, kPoints, classesCount):
     for point in selectedPoints:
         index = int(point[2]) - 1
         classesVotes[index] = classesVotes[index] + 1
-    
-    max_class = max(classesVotes)
-    testInstance[2] = max_class
-    return testInstance
 
+    return [testInstance[:1], np.argmax(classesVotes) + 1]
 
- 
 def getAccuracy(test_data, predictions):
 	correct = 0
 	for x in range(len(test_data)):
