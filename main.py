@@ -17,45 +17,16 @@ K = 3
 def load_and_compute():
     print("hello")
 
-def read_simple_data_test_file():
+def readFile(fileName):
     xs = []
-    with open(SIMPLE_TEST_FILE, newline='') as file:
+    with open(fileName, newline='') as file:
         lines = csv.reader(file)
         next(lines)
         for record in lines:
             parsed = [float(record[0]), float(record[1]), int(record[2])]
             xs.append(parsed)
+    print("File {0} has been read successfully".format(fileName))
     return np.array(xs)
-
-def read_simple_data_train_file():
-    xs = []
-    with open(SIMPLE_TRAIN_FILE, newline='') as file:
-        lines = csv.reader(file)
-        next(lines)
-        for record in lines:
-            parsed = [float(record[0]), float(record[1]), int(record[2])]
-            xs.append(parsed)
-    return np.array(xs)
-
-def read_gauss_three_data_test_file():
-    xs = []
-    with open(THREE_GAUSS_TEST_FILE, newline='') as file:
-        lines = csv.reader(file)
-        next(lines)
-        for record in lines:
-            parsed = [float(record[0]), float(record[1]), int(record[2])]
-            xs.append(parsed)
-    return np.array(xs)  
-
-def read_gauss_three_data_train_file():
-    xs = []
-    with open(THREE_GAUSS_TRAIN_FILE, newline='') as file:
-        lines = csv.reader(file)
-        next(lines)
-        for record in lines:
-            parsed = [float(record[0]), float(record[1]), int(record[2])]
-            xs.append(parsed)
-    return np.array(xs)  
 
 
 def euclideanDistance(instance1, instance2, length):
@@ -99,8 +70,8 @@ def split_in_out(data):
 
 def simple_data_load_and_compute():
     print("simple data computing...")
-    train_data = read_simple_data_train_file()
-    test_data = read_simple_data_test_file()
+    train_data = readFile(SIMPLE_TRAIN_FILE)
+    test_data = readFile(SIMPLE_TEST_FILE)
     predictions = compute(train_data, test_data)
 
     test_points, test_classess= split_in_out(test_data)
@@ -109,8 +80,8 @@ def simple_data_load_and_compute():
    
 def three_gauss_data_load_and_compute():
     print("three gauss data computing...")
-    train_data = read_gauss_three_data_train_file()
-    test_data = read_gauss_three_data_test_file()
+    train_data = readFile(THREE_GAUSS_TRAIN_FILE)
+    test_data = readFile(THREE_GAUSS_TEST_FILE)
     predictions = compute(train_data, test_data)
 
     test_points, test_classess= split_in_out(test_data)
