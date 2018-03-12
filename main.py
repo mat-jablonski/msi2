@@ -14,6 +14,17 @@ THREE_GAUSS_TRAIN_FILE = 'data.three_gauss.train.10000.csv'
 
 K = 3
 
+def main():
+    if os.path.isfile(SIMPLE_TEST_FILE) and os.path.isfile(SIMPLE_TRAIN_FILE):
+        simple_data_load_and_compute()
+    else:
+        print("Files missing for simple data")
+
+    if os.path.isfile(THREE_GAUSS_TEST_FILE) and os.path.isfile(THREE_GAUSS_TRAIN_FILE):
+        three_gauss_data_load_and_compute()
+    else:
+        print("Files missing for three gauss data")
+
 def load_and_compute():
     print("hello")
 
@@ -124,13 +135,5 @@ def show_data(xs, vals, predictions):
     plt.scatter(list(map(lambda x: x[0], xs)), list(map(lambda y: y[1], xs)), c=list(map(map_c, predictions )))
     plt.show()
 
-
-if os.path.isfile(SIMPLE_TEST_FILE) and os.path.isfile(SIMPLE_TRAIN_FILE):
-    simple_data_load_and_compute()
-else:
-    print("Files missing for simple data")
-
-if os.path.isfile(THREE_GAUSS_TEST_FILE) and os.path.isfile(THREE_GAUSS_TRAIN_FILE):
-    three_gauss_data_load_and_compute()
-else:
-    print("Files missing for three gauss data")
+if __name__ == "__main__":
+    main()
