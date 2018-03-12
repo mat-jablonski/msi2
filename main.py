@@ -12,7 +12,7 @@ SIMPLE_TRAIN_FILE = 'data.simple.train.10000.csv'
 THREE_GAUSS_TEST_FILE = 'data.three_gauss.test.10000.csv'
 THREE_GAUSS_TRAIN_FILE = 'data.three_gauss.train.10000.csv'
 
-K = 3
+K = 70
 CLASSES = 2
 
 def main():
@@ -30,17 +30,17 @@ def simple_data_load_and_compute():
     print("simple data computing...")
     train_data = readFile(SIMPLE_TRAIN_FILE)
     test_data = readFile(SIMPLE_TEST_FILE)
-    predictions = compute(train_data, test_data, kPoints=K, classesCount=2)
+    predictions, accuracy = compute(train_data, test_data, kPoints=K, classesCount=2)
 
-    show_data(test_data, predictions, 'simple_data_results.png')
+    show_data(test_data, predictions, 'simple_data_results.png', accuracy)
    
 def three_gauss_data_load_and_compute():
     print("three gauss data computing...")
     train_data = readFile(THREE_GAUSS_TRAIN_FILE)
     test_data = readFile(THREE_GAUSS_TEST_FILE)
-    predictions = compute(train_data, test_data, kPoints=K, classesCount=3)
+    predictions, accuracy = compute(train_data, test_data, kPoints=K, classesCount=3)
 
-    show_data(test_data, predictions, 'three_gauss_data_results.png')
+    show_data(test_data, predictions, 'three_gauss_data_results.png', accuracy)
 
 def readFile(fileName):
     xs = []
@@ -68,7 +68,7 @@ def compute(train_data, test_data, kPoints, classesCount):
     accuracy = getAccuracy(test_data, predictions)
     print('Accuracy: ' + repr(accuracy) + '%')
 
-    return predictions
+    return (predictions, accuracy)
 
 def getSortedPointsByDistances(train_data, testInstance):
     xArray = train_data[0:len(train_data), 0]
@@ -103,15 +103,14 @@ def getAccuracy(test_data, predictions):
 			correct += 1
 	return (correct/float(len(test_data))) * 100.0
 
-def show_data(test_data, predictions, result_filename):
+def show_data(test_data, predictions, result_filename, accuracy):
     plt.gcf().set_size_inches(10, 10)
     plt.subplot(221)
     plt.title("Test Data")
     plt.scatter(list(map(lambda x: x[0], test_data)), list(map(lambda y: y[1], test_data)), c=list(map(lambda z: z[2], test_data)))
     plt.subplot(222)
-    plt.title("Predictions")
+    plt.title("Predictions, K={0}, accuracy: {1} %".format(K, accuracy))
     plt.scatter(list(map(lambda x: x[0], predictions)), list(map(lambda y: y[1], predictions)), c=list(map(lambda z: z[2], predictions)))
-
     plt.savefig(result_filename)
     plt.show()
 
