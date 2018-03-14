@@ -16,31 +16,22 @@ K = 70
 CLASSES = 2
 
 def main():
-    if os.path.isfile(SIMPLE_TEST_FILE) and os.path.isfile(SIMPLE_TRAIN_FILE):
-        simple_data_load_and_compute()
+    startAlgorithm(SIMPLE_TRAIN_FILE, SIMPLE_TEST_FILE, "Simple_data", K, 2)
+    startAlgorithm(THREE_GAUSS_TRAIN_FILE, THREE_GAUSS_TEST_FILE, "Three_gauss", K, 3)
+
+def startAlgorithm(trainDataFile, testDataFile, algorithmName, kPoints, classesCount):
+    if os.path.isfile(trainDataFile) and os.path.isfile(testDataFile):
+        loadAndCompute(trainDataFile, testDataFile, algorithmName, kPoints, classesCount)
     else:
-        print("Files missing for simple data")
+        print("Files missing for {0}".format(algorithmName))
+    
+def loadAndCompute(trainDataFile, testDataFile, algorithmName, kPoints, classesCount):
+    print("{0} computing...".format(algorithmName))
+    train_data = readFile(trainDataFile)
+    test_data = readFile(testDataFile)
+    predictions, accuracy = compute(train_data, test_data, kPoints, classesCount)
 
-    if os.path.isfile(THREE_GAUSS_TEST_FILE) and os.path.isfile(THREE_GAUSS_TRAIN_FILE):
-        three_gauss_data_load_and_compute()
-    else:
-        print("Files missing for three gauss data")
-
-def simple_data_load_and_compute():
-    print("simple data computing...")
-    train_data = readFile(SIMPLE_TRAIN_FILE)
-    test_data = readFile(SIMPLE_TEST_FILE)
-    predictions, accuracy = compute(train_data, test_data, kPoints=K, classesCount=2)
-
-    show_data(test_data, predictions, 'simple_data_results.png', accuracy)
-   
-def three_gauss_data_load_and_compute():
-    print("three gauss data computing...")
-    train_data = readFile(THREE_GAUSS_TRAIN_FILE)
-    test_data = readFile(THREE_GAUSS_TEST_FILE)
-    predictions, accuracy = compute(train_data, test_data, kPoints=K, classesCount=3)
-
-    show_data(test_data, predictions, 'three_gauss_data_results.png', accuracy)
+    show_data(test_data, predictions, '{0}_results.png'.format(algorithmName), accuracy)
 
 def readFile(fileName):
     xs = []
@@ -92,15 +83,6 @@ def getResponse(sortedPoints, testInstance, kPoints, classesCount):
     for point in selectedPoints:
         index = int(point[2]) - 1
         classesVotes[index] = classesVotes[index] + 1
-
-    # maxValue = 0
-    # maxIndex = 0
-    # for index in range(len(classesVotes)):
-    #     if classesVotes[index] > maxValue:
-    #         maxValue = classesVotes[index]
-    #         maxIndex = index
-    # testInstance[2] = maxIndex + 1
-    # return testInstance
 
     return [testInstance[0], testInstance[1], np.argmax(classesVotes) + 1]
 def getAccuracy(test_data, predictions):
